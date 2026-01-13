@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
+  provider = "prisma-client-js"
   output   = "../app/generated/prisma"
 }
 
@@ -14,7 +14,7 @@ datasource db {
 }
 
 model Issue {
-  id          Int      @id
+  id          Int      @id @default(autoincrement())
   name        String   @db.VarChar(255)
   description String   @db.Text
   status      Status   @default(OPEN)
