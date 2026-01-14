@@ -5,6 +5,10 @@
   --foreground: #171717;
 }
 
+.radix-themes {
+	--default-font-family: var(--font-inter);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
