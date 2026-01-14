@@ -1,7 +1,10 @@
+import {Button} from "@radix-ui/themes";
+import Link from "next/dist/client/link";
+
 const IssuesPage = () => {
  return (
     <div>
-        IssuesPage
+        <Button><Link href="/issues/new"> Create New Issue</Link></Button>
     </div>
   );
 };
