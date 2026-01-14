@@ -1,20 +1,22 @@
 'use client'
-import {Button, Callout, TextArea, TextField} from "@radix-ui/themes";
+import {Button, Callout, Text, TextArea, TextField} from "@radix-ui/themes";
 import {useForm} from "react-hook-form";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
+import {z} from "zod";
+import {createIssueSchema} from "@/app/ValidationSchemas";
+import {zodResolver} from "@hookform/resolvers/zod";
 
-interface NewIssueForm {
-    name: string;
-    description: string;
-}
+type NewIssueForm = z.infer<typeof createIssueSchema>;
 
 const NewIssuePage = () => {
 
     const router = useRouter()
     const [error, setError] = useState('')
 
-    const {register, handleSubmit} = useForm<NewIssueForm>()
+    const {register, handleSubmit, formState: {errors}} = useForm<NewIssueForm>({
+        resolver: zodResolver(createIssueSchema)
+    })
     return (
         <div className="max-w-xl">
 
@@ -32,7 +34,9 @@ const NewIssuePage = () => {
                 }
             })}>
                 <TextField.Root placeholder='Name' {...register("name")}/>
+                {errors.name && <Text as='p'   color='red'>{errors.name?.message}</Text>}
                 <TextArea placeholder='Description' {...register("description")}/>
+                {errors.description && <Text as='p' color='red'>{errors.description?.message}</Text>}
                 <Button>Submit New Issue</Button>
             </form>
         </div>
