@@ -1,7 +1,8 @@
 import {NextRequest} from "next/dist/server/web/spec-extension/request";
 import {z} from "zod";
 import {NextResponse} from "next/dist/server/web/spec-extension/response";
-import {prisma} from "@/lib/prisma";
+import {prisma} from "@/client";
+
 
 const createIssueSchema = z.object({
     name: z.string().min(1).max(255),
