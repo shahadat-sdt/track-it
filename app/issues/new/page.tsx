@@ -1,5 +1,5 @@
 'use client'
-import {Button, Callout, TextArea, TextField} from "@radix-ui/themes";
+import {Button, Callout, Spinner, TextArea, TextField} from "@radix-ui/themes";
 import {useForm} from "react-hook-form";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
@@ -14,6 +14,7 @@ const NewIssuePage = () => {
 
     const router = useRouter()
     const [error, setError] = useState('')
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const {register, handleSubmit, formState: {errors}} = useForm<NewIssueForm>({
         resolver: zodResolver(createIssueSchema)
@@ -24,13 +25,15 @@ const NewIssuePage = () => {
             {error && <Callout.Root color='red' className='mb-5'>
                 <Callout.Text>{error}</Callout.Text>
             </Callout.Root>}
-            <form className="space-y-3  " onSubmit={handleSubmit(async (data) => {
+            <form className="space-y-3" onSubmit={handleSubmit(async (data) => {
                 try {
+                    setIsSubmitting(true)
                     const res = await fetch("/api/issues", {method: "POST", body: JSON.stringify(data)});
                     if (!res.ok) throw new Error()
                     router.push("/issues");
 
                 } catch (e) {
+                    setIsSubmitting(false)
                     setError("Unexpected error occurred.");
                 }
             })}>
@@ -38,7 +41,7 @@ const NewIssuePage = () => {
                 <ErrorMessage>{errors.name?.message}</ErrorMessage>
                 <TextArea placeholder='Description' {...register("description")}/>
                 <ErrorMessage>{errors.description?.message}</ErrorMessage>
-                <Button>Submit New Issue</Button>
+                <Button disabled={isSubmitting}>Submit New Issue {isSubmitting && <Spinner/>}</Button>
             </form>
         </div>
     );
