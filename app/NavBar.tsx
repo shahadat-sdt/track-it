@@ -12,7 +12,7 @@ const NavBar = () => {
     ]
     return (
         <nav
-            className="flex border-b space-x-6 mb-5  px-5 h-14 items-center navbar navbar-expand-lg navbar-dark bg-dark">
+            className="flex border-b border-gray-200 space-x-6 mb-5  px-5 h-14 items-center navbar navbar-expand-lg navbar-dark bg-dark">
             <Link className="navbar-brand" href="/"><AiFillBug/></Link>
             <ul className="flex space-x-6">
                 {links.map((link) => (
