@@ -4,12 +4,12 @@ import {useForm} from "react-hook-form";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
 import {z} from "zod";
-import {createIssueSchema} from "@/app/ValidationSchemas";
+import {issueSchema} from "@/app/ValidationSchemas";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {ErrorMessage} from "@/app/components";
 import {Issue} from "@/app/generated/prisma/client";
 
-type IssueFormData = z.infer<typeof createIssueSchema>;
+type IssueFormData = z.infer<typeof issueSchema>;
 
 const IssueForm = ({issue}: { issue?: Issue }) => {
 
@@ -19,7 +19,7 @@ const IssueForm = ({issue}: { issue?: Issue }) => {
 
 
         const {register, handleSubmit, formState: {errors}} = useForm<IssueFormData>({
-            resolver: zodResolver(createIssueSchema)
+            resolver: zodResolver(issueSchema)
         })
 
         const onsubmit = handleSubmit(async (data) => {
