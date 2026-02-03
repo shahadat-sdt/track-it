@@ -6,7 +6,7 @@ import {useRouter} from "next/navigation";
 import {z} from "zod";
 import {createIssueSchema} from "@/app/ValidationSchemas";
 import {zodResolver} from "@hookform/resolvers/zod";
-import ErrorMessage from "@/app/components/ErrorMessage";
+import {ErrorMessage} from "@/app/components";
 
 type NewIssueForm = z.infer<typeof createIssueSchema>;
 

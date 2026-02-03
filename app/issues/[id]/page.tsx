@@ -1,8 +1,7 @@
 import {prisma} from "@/client";
 import {notFound} from "next/navigation";
 import {Card, Flex, Heading} from "@radix-ui/themes";
-import IssueStatusBadge from "@/app/components/IssueStatusBadge";
-import delay from "delay";
+import {IssueStatusBadge} from "@/app/components";
 
 
 interface Props {
