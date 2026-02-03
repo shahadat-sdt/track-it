@@ -25,8 +25,12 @@ const IssueForm = ({issue}: { issue?: Issue }) => {
         const onsubmit = handleSubmit(async (data) => {
             try {
                 setIsSubmitting(true)
-                const res = await fetch("/api/issues", {method: "POST", body: JSON.stringify(data)});
-                if (!res.ok) throw new Error()
+                if (issue)
+                    await fetch(`/api/issues/${issue.id}`, {method: "PATCH", body: JSON.stringify(data)});
+                else {
+                    const res = await fetch("/api/issues", {method: "POST", body: JSON.stringify(data)});
+                    if (!res.ok) throw new Error()
+                }
                 router.push("/issues");
 
             } catch (e) {
@@ -46,7 +50,9 @@ const IssueForm = ({issue}: { issue?: Issue }) => {
                     <ErrorMessage>{errors.name?.message}</ErrorMessage>
                     <TextArea defaultValue={issue?.description} placeholder='Description' {...register("description")}/>
                     <ErrorMessage>{errors.description?.message}</ErrorMessage>
-                    <Button disabled={isSubmitting}>Submit New Issue {isSubmitting && <Spinner/>}</Button>
+                    <Button disabled={isSubmitting}>
+                        {issue ? "Update Issue" : " Submit New Issue"}{' '} {isSubmitting && <Spinner/>}
+                    </Button>
                 </form>
             </div>
         )
