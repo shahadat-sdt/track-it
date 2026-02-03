@@ -33,6 +33,7 @@ const NewIssuePage = () => {
                 setError("Unexpected error occurred.");
             }
         })
+
         return (
             <div className="max-w-xl">
 
