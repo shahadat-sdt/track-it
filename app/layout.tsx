@@ -8,8 +8,8 @@ import NavBar from "@/app/NavBar";
 import {Theme} from "@radix-ui/themes";
 
 const inter = Inter({
-	subsets: ["latin"],
-	variable: "--font-inter"
+    subsets: ["latin"],
+    variable: "--font-inter"
 });
 
 const geistSans = Geist({
