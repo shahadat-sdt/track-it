@@ -2,7 +2,6 @@ import {issueSchema} from "@/app/ValidationSchemas";
 import {NextResponse} from "next/dist/server/web/spec-extension/response";
 import {prisma} from "@/client";
 import {NextRequest} from "next/dist/server/web/spec-extension/request";
-import delay from "delay";
 
 export async function PATCH(request: Request, {params}: { params: { id: string } }) {
 
@@ -28,7 +27,7 @@ export async function PATCH(request: Request, {params}: { params: { id: string }
 }
 
 
-export async function DELETE(req : NextRequest,{params}: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, {params}: { params: { id: string } }) {
 
     const param = await params
 
