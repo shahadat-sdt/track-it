@@ -1,19 +1,22 @@
 'use client'
-import {AlertDialog, Button, Flex} from "@radix-ui/themes";
+import {AlertDialog, Button, Flex, Spinner} from "@radix-ui/themes";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
 
 const DeleteIssueButton = ({issueId}: { issueId: number }) => {
     const router = useRouter()
     const [error, setError] = useState(false)
+    const [isDeleting, setIsDeleting] = useState(false)
     const deleteIssue = async () => {
         try {
+            setIsDeleting(true)
             await fetch("/api/issues/" + issueId, {
                 method: "DELETE"
             })
             router.push("/issues")
             router.refresh()
         } catch (error) {
+            setIsDeleting(false)
             setError(true)
         }
 
@@ -23,8 +26,9 @@ const DeleteIssueButton = ({issueId}: { issueId: number }) => {
 
             <AlertDialog.Root>
                 <AlertDialog.Trigger>
-                    <Button color="red">
+                    <Button color="red" disabled={isDeleting}>
                         Delete Issue
+                        {isDeleting && <Spinner/>}
                     </Button>
                 </AlertDialog.Trigger>
                 <AlertDialog.Content>
@@ -41,14 +45,14 @@ const DeleteIssueButton = ({issueId}: { issueId: number }) => {
                     </Flex>
                 </AlertDialog.Content>
             </AlertDialog.Root>
+
+
             <AlertDialog.Root open={error}>
                 <AlertDialog.Content>
                     <AlertDialog.Title>Error</AlertDialog.Title>
                     <AlertDialog.Description>Could not delete this error</AlertDialog.Description>
                     <AlertDialog.Action>
-                        <Button mt='2' color='gray' variant='soft' onClick={() => {
-                            setError(false)
-                        }}>Ok</Button>
+                        <Button mt='2' color='gray' variant='soft' onClick={() => {setError(false)}}>Ok</Button>
                     </AlertDialog.Action>
                 </AlertDialog.Content>
             </AlertDialog.Root>
