@@ -11,7 +11,6 @@ import {ErrorMessage} from "@/app/components";
 import {Issue} from "@/app/generated/prisma/client";
 
 type IssueFormData = z.infer<typeof issueSchema>;
-
 const IssueForm = ({issue}: { issue?: Issue }) => {
 
         const router = useRouter()

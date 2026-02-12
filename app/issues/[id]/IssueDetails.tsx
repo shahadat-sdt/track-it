@@ -1,9 +1,9 @@
-import {Box, Card, Flex, Heading} from "@radix-ui/themes";
+import {Card, Flex, Heading} from "@radix-ui/themes";
 import {IssueStatusBadge} from "@/app/components";
 import {Issue} from "@/app/generated/prisma/client";
 
 
-const IssueDetails = ({issue}: {issue: Issue }) => {
+const IssueDetails = ({issue}: { issue: Issue }) => {
     return (
         <>
             <Heading>{issue.name}</Heading>
