@@ -3,7 +3,7 @@ import Link from "next/dist/client/link";
 import {AiFillBug} from "react-icons/ai";
 import classNames from "classnames";
 import {usePathname} from "next/dist/client/components/navigation";
-import {Box, Container, Flex} from "@radix-ui/themes";
+import {Avatar, Box, Container, DropdownMenu, Flex} from "@radix-ui/themes";
 import {useSession} from "next-auth/react";
 
 const NavBar = () => {
@@ -14,7 +14,7 @@ const NavBar = () => {
         {label: 'Issues', href: '/issues'},
     ]
     return (
-        <nav className="border-b border-gray-200  mb-5  px-5 py-5 navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav className="border-b border-gray-200 py-3">
             <Container>
                 <Flex justify="between">
                     <Flex align='center' gap='3'>
@@ -39,9 +39,25 @@ const NavBar = () => {
                         {status === "unauthenticated" && < Link href={"/api/auth/signin"}>
                             Login
                         </Link>}
-                        {status === "authenticated" && < Link href={"/api/auth/signout"}>
-                            Logout
-                        </Link>}
+                        {status === "authenticated" && (
+                            <DropdownMenu.Root>
+                                <DropdownMenu.Trigger>
+                                    <Avatar src={session.user!.image!} size='2' radius='full'
+                                            fallback={session.user!.name?.[0] || 'U'}
+                                    />
+                                </DropdownMenu.Trigger>
+                                <DropdownMenu.Content>
+                                    <DropdownMenu.Label>
+                                        {session.user!.email}
+                                    </DropdownMenu.Label>
+                                    <DropdownMenu.Item>
+                                        < Link href={"/api/auth/signout"}>
+                                            Logout
+                                        </Link>
+                                    </DropdownMenu.Item>
+                                </DropdownMenu.Content>
+                            </DropdownMenu.Root>
+                        )}
                     </Box>
                 </Flex>
 
