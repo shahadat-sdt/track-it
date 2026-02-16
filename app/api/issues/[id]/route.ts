@@ -2,8 +2,14 @@ import {issueSchema} from "@/app/ValidationSchemas";
 import {NextResponse} from "next/dist/server/web/spec-extension/response";
 import {prisma} from "@/client";
 import {NextRequest} from "next/dist/server/web/spec-extension/request";
+import {getServerSession} from "next-auth";
+import authOptions from "@/app/auth/AuthOptions";
 
 export async function PATCH(request: Request, {params}: { params: { id: string } }) {
+
+    const session = await getServerSession(authOptions)
+    if (!session) return NextResponse.json({},{status: 401});
+
 
     const param = await params
 
@@ -28,6 +34,9 @@ export async function PATCH(request: Request, {params}: { params: { id: string }
 
 
 export async function DELETE(req: NextRequest, {params}: { params: { id: string } }) {
+
+     const session = await getServerSession(authOptions)
+    if (!session) return NextResponse.json({},{status: 401});
 
     const param = await params
 
