@@ -1,10 +1,10 @@
 'use client'
 import {Select} from "@radix-ui/themes";
-import {User} from "@/app/generated/prisma/client";
+import {Issue, User} from "@/app/generated/prisma/client";
 import {useQuery} from "@tanstack/react-query";
 import Skeleton from "@/app/components/Skeleton";
 
-const AssigneeSelect = () => {
+const AssigneeSelect = ({issue}: { issue: Issue }) => {
 
 
     const {data: users, error, isLoading} = useQuery<User[]>({
@@ -18,11 +18,17 @@ const AssigneeSelect = () => {
     if (error) return null
 
     return (
-        <Select.Root>
+        <Select.Root defaultValue={issue.assignedToUserId || "unassigned"} onValueChange={(userId) =>
+            fetch(`/api/issues/${issue.id}`, {
+                method: "PATCH",
+                body: JSON.stringify({assignedToUserId: userId === 'unassigned' ? null : userId}),
+            })
+        }>
             <Select.Trigger placeholder='Assign...'/>
             <Select.Content>
                 <Select.Group>
                     <Select.Label>Suggestion</Select.Label>
+                    <Select.Item value="unassigned">Unassigned</Select.Item>
                     {users?.map((user) =>
                         <Select.Item key={user.id} value={user.id}>{user.name}</Select.Item>
                     )}
