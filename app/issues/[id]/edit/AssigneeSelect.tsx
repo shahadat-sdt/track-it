@@ -8,32 +8,28 @@ import toast, {Toaster} from "react-hot-toast";
 const AssigneeSelect = ({issue}: { issue: Issue }) => {
 
 
-    const {data: users, error, isLoading} = useQuery<User[]>({
-        queryKey: ["users"],
-        queryFn: () => fetch("/api/users").then(res => res.json()),
-        staleTime: 60 * 1000,
-        retry: 3
-    })
+    const {data: users, error, isLoading} = getUsers()
 
     if (isLoading) return <Skeleton/>
     if (error) return null
 
+    const assignUser = async (userId: string) => {
+
+        try {
+            const res = await fetch(`/api/issues/${issue.id}`, {
+                method: "PATCH",
+                body: JSON.stringify({assignedToUserId: userId === 'unassigned' ? null : userId}),
+            })
+
+            if (!res.ok) throw Error()
+        } catch (e) {
+            toast.error("Changes could not be saved");
+        }
+    }
+
     return (
         <>
-            <Select.Root defaultValue={issue.assignedToUserId || "unassigned"} onValueChange={async (userId) => {
-
-                try {
-                    const res = await fetch(`/api/issues/${issue.id}`, {
-                        method: "PATCH",
-                        body: JSON.stringify({assignedToUserId: userId === 'unassigned' ? null : userId}),
-                    })
-
-                    if (!res.ok) throw Error()
-                } catch (e) {
-                    toast.error("Changes could not be saved");
-                }
-            }
-            }>
+            <Select.Root defaultValue={issue.assignedToUserId || "unassigned"} onValueChange={assignUser}>
                 <Select.Trigger placeholder='Assign...'/>
                 <Select.Content>
                     <Select.Group>
@@ -50,5 +46,12 @@ const AssigneeSelect = ({issue}: { issue: Issue }) => {
         </>
     );
 };
+
+const getUsers = () => useQuery<User[]>({
+    queryKey: ["users"],
+    queryFn: () => fetch("/api/users").then(res => res.json()),
+    staleTime: 60 * 1000,
+    retry: 3
+})
 
 export default AssigneeSelect;
