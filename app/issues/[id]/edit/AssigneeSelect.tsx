@@ -8,7 +8,7 @@ import toast, {Toaster} from "react-hot-toast";
 const AssigneeSelect = ({issue}: { issue: Issue }) => {
 
 
-    const {data: users, error, isLoading} = getUsers()
+    const {data: users, error, isLoading} = useUsers()
 
     if (isLoading) return <Skeleton/>
     if (error) return null
@@ -47,7 +47,7 @@ const AssigneeSelect = ({issue}: { issue: Issue }) => {
     );
 };
 
-const getUsers = () => useQuery<User[]>({
+const useUsers = () => useQuery<User[]>({
     queryKey: ["users"],
     queryFn: () => fetch("/api/users").then(res => res.json()),
     staleTime: 60 * 1000,
